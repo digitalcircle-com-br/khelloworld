@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &app khelloworld
+  namespace: default
+  labels:
+    app: *app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *app
+  template:
+    metadata:
+      labels:
+        app: *app
+    spec:
+      containers:
+        - name: *app
+          image: digitalcircle/khelloworld:amd64
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: reg
+      restartPolicy: Always
+---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: &app kgw
+#  namespace: kgw
+#  annotations:
+#    prometheus.io/scrape: "true"
+#    prometheus.io/path: /
+#    prometheus.io/port: "8081"
+#spec:
+#  ports:
+#    - name: 443-tcp
+#      protocol: TCP
+#      port: 443
+#      targetPort: 443
+#    - name: 8081-tcp
+#      protocol: TCP
+#      port: 8081
+#      targetPort: 8081
+#  selector:
+#    app: *app
+#  type: LoadBalancer
+#
